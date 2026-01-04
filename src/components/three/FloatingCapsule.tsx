@@ -2,6 +2,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Capsule } from '@react-three/drei'
+// @ts-ignore
 import * as THREE from 'three'
 
 export default function FloatingCapsule() {
