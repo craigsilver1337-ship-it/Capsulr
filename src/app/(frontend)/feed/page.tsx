@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { readContract } from 'wagmi';
-import { config } from '@/lib/config';
+import { createPublicClient, http } from 'viem';
+import { monadTestnet } from 'wagmi/chains';
 import contractABI from '@/lib/contractutils.json';
 import contractAddress from '@/lib/contractAddress.json';
 import { 
@@ -118,7 +118,12 @@ const formatAddress = (address: string) => {
 // Function to fetch all capsules from the contract
 const fetchAllCapsules = async (): Promise<Capsule[]> => {
   try {
-    const result = await readContract(config, {
+    const client = createPublicClient({
+      chain: monadTestnet,
+      transport: http(),
+    });
+
+    const result = await client.readContract({
       address: contractAddress as `0x${string}`,
       abi: contractABI,
       functionName: 'getAllCapsules',

@@ -11,9 +11,7 @@ import {  monadTestnet } from 'wagmi/chains';
 import { Chain } from '@rainbow-me/rainbowkit';
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || '';
-const supportedChains: Chain[] = [monadTestnet
-
-];
+const supportedChains: Chain[] = [monadTestnet];
 
 const connectors = connectorsForWallets(
   [
