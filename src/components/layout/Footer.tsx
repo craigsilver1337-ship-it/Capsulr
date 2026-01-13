@@ -1,8 +1,39 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
-import { Hourglass, Twitter, Github, Linkedin, Disc as Discord } from "lucide-react"
+import { Hourglass, Twitter, Send, Pill } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import FAQModal from "@/components/modals/FAQModal"
+import StatusModal from "@/components/modals/StatusModal"
+import GuidesModal from "@/components/modals/GuidesModal"
+import GovernanceModal from "@/components/modals/GovernanceModal"
+import TermsModal from "@/components/modals/TermsModal"
+import PrivacyModal from "@/components/modals/PrivacyModal"
+import { motion } from "framer-motion"
 
 const Footer = () => {
+  const [isFAQOpen, setIsFAQOpen] = useState(false)
+  const [isStatusOpen, setIsStatusOpen] = useState(false)
+  const [isGuidesOpen, setIsGuidesOpen] = useState(false)
+  const [isGovernanceOpen, setIsGovernanceOpen] = useState(false)
+  const [isTermsOpen, setIsTermsOpen] = useState(false)
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
+
+  // 80s Neon Flicker Animation
+  const neonGlow = {
+    textShadow: [
+      "0 0 2px #22d3ee, 0 0 4px #22d3ee, 0 0 6px #22d3ee, 0 0 10px #22d3ee, 0 0 45px #22d3ee",
+      "0 0 2px #22d3ee, 0 0 4px #22d3ee, 0 0 6px #22d3ee, 0 0 10px #22d3ee, 0 0 25px #22d3ee",
+      "0 0 2px #22d3ee, 0 0 4px #22d3ee, 0 0 6px #22d3ee, 0 0 10px #22d3ee, 0 0 45px #22d3ee",
+    ],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      repeatType: "reverse" as const,
+    }
+  }
+
   return (
     <footer className="bg-black border-t border-white/10 pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -18,15 +49,19 @@ const Footer = () => {
               The On-Chain Time Capsule Network. Create, lock, and reveal digital time capsules on the blockchain.
             </p>
             <div className="flex space-x-4">
-              <SocialIcon icon={<Twitter className="h-4 w-4" />} />
-              <SocialIcon icon={<Discord className="h-4 w-4" />} />
-              <SocialIcon icon={<Github className="h-4 w-4" />} />
-              <SocialIcon icon={<Linkedin className="h-4 w-4" />} />
+              <SocialIcon icon={<Twitter className="h-5 w-5" />} label="X (Twitter)" />
+              <SocialIcon icon={<Send className="h-5 w-5" />} label="Telegram" />
+              <SocialIcon icon={<Pill className="h-5 w-5" />} label="Pump.fun" />
             </div>
           </div>
-          
+
           <div>
-            <h4 className="text-white font-medium mb-4">Product</h4>
+            <motion.h4
+              animate={neonGlow}
+              className="text-cyan-400 font-bold mb-6 text-lg tracking-widest font-space-grotesk uppercase"
+            >
+              Product
+            </motion.h4>
             <ul className="space-y-2">
               <FooterLink href="/capsules">Capsules</FooterLink>
               <FooterLink href="/marketplace">Marketplace</FooterLink>
@@ -34,37 +69,94 @@ const Footer = () => {
               <FooterLink href="/statistics">Statistics</FooterLink>
             </ul>
           </div>
-          
+
           <div>
-            <h4 className="text-white font-medium mb-4">Resources</h4>
+            <motion.h4
+              animate={neonGlow}
+              className="text-cyan-400 font-bold mb-6 text-lg tracking-widest font-space-grotesk uppercase"
+            >
+              Resources
+            </motion.h4>
             <ul className="space-y-2">
               <FooterLink href="/documentation">Documentation</FooterLink>
-              <FooterLink href="/guides">Guides</FooterLink>
-              <FooterLink href="/api">API</FooterLink>
-              <FooterLink href="/faq">FAQ</FooterLink>
+              <li>
+                <button
+                  onClick={() => setIsGuidesOpen(true)}
+                  className="text-gray-400 hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-colors text-left"
+                >
+                  Guides
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setIsStatusOpen(true)}
+                  className="text-gray-400 hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-colors text-left flex items-center gap-2"
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  API Status
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setIsFAQOpen(true)}
+                  className="text-gray-400 hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-colors text-left"
+                >
+                  FAQ
+                </button>
+              </li>
             </ul>
           </div>
-          
+
           <div>
-            <h4 className="text-white font-medium mb-4">Company</h4>
+            <motion.h4
+              animate={neonGlow}
+              className="text-cyan-400 font-bold mb-6 text-lg tracking-widest font-space-grotesk uppercase"
+            >
+              Legal & Gov
+            </motion.h4>
             <ul className="space-y-2">
-              <FooterLink href="/about">About</FooterLink>
-              <FooterLink href="/team">Team</FooterLink>
-              <FooterLink href="/careers">Careers</FooterLink>
-              <FooterLink href="/contact">Contact</FooterLink>
+              <li>
+                <button
+                  onClick={() => setIsPrivacyOpen(true)}
+                  className="text-gray-400 hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-colors text-left"
+                >
+                  Privacy Policy
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setIsTermsOpen(true)}
+                  className="text-gray-400 hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-colors text-left"
+                >
+                  Terms of Service
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setIsGovernanceOpen(true)}
+                  className="text-gray-400 hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] transition-colors text-left"
+                >
+                  Governance
+                </button>
+              </li>
             </ul>
           </div>
         </div>
-        
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-          <div>© 2025 Capsulr. All rights reserved.</div>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link href="/cookies" className="hover:text-white transition-colors">Cookies Policy</Link>
-          </div>
+
+        <div className="mt-16 pt-8 border-t border-white/10 text-center text-gray-500 text-sm">
+          <div>© 2026 Capsulr. All rights reserved.</div>
         </div>
       </div>
+
+      <FAQModal isOpen={isFAQOpen} onClose={() => setIsFAQOpen(false)} />
+      <StatusModal isOpen={isStatusOpen} onClose={() => setIsStatusOpen(false)} />
+      <GuidesModal isOpen={isGuidesOpen} onClose={() => setIsGuidesOpen(false)} />
+      <GovernanceModal isOpen={isGovernanceOpen} onClose={() => setIsGovernanceOpen(false)} />
+      <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
+      <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </footer>
   )
 }
@@ -76,7 +168,7 @@ interface FooterLinkProps {
 
 const FooterLink = ({ href, children }: FooterLinkProps) => (
   <li>
-    <Link href={href} className="text-gray-400 hover:text-white transition-colors">
+    <Link href={href} className="text-gray-400 hover:text-cyan-400 transition-colors hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
       {children}
     </Link>
   </li>
@@ -84,10 +176,16 @@ const FooterLink = ({ href, children }: FooterLinkProps) => (
 
 interface SocialIconProps {
   icon: React.ReactNode
+  label?: string
 }
 
-const SocialIcon = ({ icon }: SocialIconProps) => (
-  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white">
+const SocialIcon = ({ icon, label }: SocialIconProps) => (
+  <Button
+    variant="ghost"
+    size="icon"
+    className="h-12 w-12 rounded-2xl bg-black border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300"
+    title={label}
+  >
     {icon}
   </Button>
 )

@@ -2,41 +2,33 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
 import { Wallet, Sliders, ShieldCheck, Unlock } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 const HowItWorks = () => {
-  const router = useRouter();
-
   const steps = [
     {
       number: "01",
       title: "Connect & Design",
       description: "Connect your Solana wallet. Choose assets (SOL, SPL tokens, NFTs) and craft your message using our encrypted editor.",
-      icon: <Wallet className="h-6 w-6" />,
-      color: "text-cyan-400"
+      icon: <Wallet className="h-6 w-6 text-[#00F0FF]" />,
     },
     {
       number: "02",
       title: "Set Smart Conditions",
       description: "Define immutable unlock parameters: specific date, Oracle price target (e.g., SOL > $500), or wallet activity.",
-      icon: <Sliders className="h-6 w-6" />,
-      color: "text-cyan-400"
+      icon: <Sliders className="h-6 w-6 text-[#00F0FF]" />,
     },
     {
       number: "03",
       title: "Decentralized Custody",
       description: "Your capsule is minted as a unique NFT. Assets are secured in a non-custodial smart contract on Solana.",
-      icon: <ShieldCheck className="h-6 w-6" />,
-      color: "text-cyan-400"
+      icon: <ShieldCheck className="h-6 w-6 text-[#00F0FF]" />,
     },
     {
       number: "04",
       title: "Trustless Reveal",
       description: "When conditions are met, the contract automatically unlocks. Claim your assets or share the revealed capsule with the world.",
-      icon: <Unlock className="h-6 w-6" />,
-      color: "text-cyan-400"
+      icon: <Unlock className="h-6 w-6 text-[#00F0FF]" />,
     }
   ]
 
@@ -57,92 +49,95 @@ const HowItWorks = () => {
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 50,
-        damping: 20
+        stiffness: 40,
+        damping: 15
       }
     }
-  }
+  } as const
 
   return (
-    <section className="pt-10 pb-24 bg-transparent relative overflow-hidden">
-
+    <section className="py-24 bg-transparent relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
 
-        <div className="text-center mb-16">
+        {/* Header Section */}
+        <div className="text-center mb-20 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 font-space-grotesk">
-              How It <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00D8FF] to-cyan-400">Works</span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white font-space-grotesk tracking-tight">
+              How It Works
             </h2>
-            <p className="text-gray-300 max-w-2xl mx-auto">
-              Creating and unlocking time capsules is easy with our streamlined process.
-              Follow these simple steps to preserve your digital legacy.
+            <p className="text-slate-300 text-lg leading-relaxed">
+              Creating and unlocking time capsules is easy with our streamlined process. Follow these simple steps to preserve your digital legacy.
             </p>
           </motion.div>
         </div>
 
+        {/* Steps Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 relative"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
         >
-          {/* Connecting Line (Pulsing) */}
-          <motion.div
-            className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-cyan-500/20 z-0 -translate-y-1/2"
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          />
+          {/* Visual Connector - Desktop Line */}
+          <div className="hidden lg:block absolute top-[20%] left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent border-t border-dashed border-cyan-500/30 z-0" />
 
           {steps.map((step, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
               whileHover={{ scale: 1.05 }}
-              className="relative z-10"
+              className="relative z-10 group"
             >
+              {/* Running Neon Border Effect from Features */}
+              <div className="absolute -inset-[1px] rounded-2xl bg-[conic-gradient(from_90deg_at_50%_50%,#00000000_50%,#22d3ee_50%,#ffffff_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-spin-slow pointer-events-none" />
+              <div className="absolute -inset-[1px] rounded-2xl bg-cyan-500/20 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300 pointer-events-none" />
+
               <div
-                className="bg-white/5 backdrop-blur-xl border border-cyan-500/20 rounded-2xl h-full relative overflow-hidden group hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all duration-300 flex flex-col p-6"
-                style={{
-                  boxShadow: 'inset 0 0 20px rgba(34, 211, 238, 0.05)'
-                }}
+                className="
+                  relative
+                  bg-black/40 backdrop-blur-xl 
+                  border border-cyan-500/30 
+                  rounded-2xl h-full p-8 
+                  flex flex-col items-start
+                  transition-all duration-500
+                  hover:border-cyan-400
+                  shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset]
+                  hover:shadow-[0_0_40px_-5px_rgba(34,211,238,0.4)]
+                "
               >
-                {/* Number Badge */}
-                <div className="mb-6 flex justify-between items-start">
-                  <span className="text-4xl font-bold text-white/10 group-hover:text-cyan-400/20 transition-colors font-space-grotesk">
+                {/* Step Number & Icon Header */}
+                <div className="flex justify-between items-center w-full mb-6 relative z-10">
+                  <div className="p-3 bg-black/40 rounded-lg border border-cyan-500/20 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/30 transition-colors duration-300">
+                    <div className="text-cyan-400 group-hover:text-cyan-300 transition-colors">
+                      {step.icon}
+                    </div>
+                  </div>
+                  <span
+                    className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white/10 to-transparent select-none font-space-grotesk group-hover:from-cyan-500/20 group-hover:to-transparent transition-all duration-500"
+                    aria-hidden="true"
+                  >
                     {step.number}
                   </span>
-                  <div className={`h-12 w-12 rounded-xl bg-black/40 flex items-center justify-center border border-cyan-500/20 text-cyan-400 group-hover:scale-110 group-hover:text-cyan-300 group-hover:border-cyan-400 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.4)] transition-all duration-300`}>
-                    {step.icon}
-                  </div>
                 </div>
 
-                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-cyan-300 transition-colors">{step.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">{step.description}</p>
-
-                {/* Glow Overlay on Hover */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                />
+                <div className="relative z-10">
+                  <h3 className="text-xl font-bold mb-4 text-white group-hover:text-cyan-100 transition-colors duration-300">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                    {step.description}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}
         </motion.div>
-
-        <div className="text-center mt-12">
-          <Button
-            size="lg"
-            className="bg-cyan-400 hover:bg-cyan-500 text-black font-bold px-8 py-6 rounded-full shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_30px_rgba(34,211,238,0.6)] hover:scale-105 transition-all duration-300"
-            onClick={() => router.push('/create')}
-          >
-            Create Your Capsule
-          </Button>
-        </div>
       </div>
     </section>
   )

@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Lock, Image, MessageSquare, Zap, Users, Target, Upload, X, File, Video, Music } from 'lucide-react';
 import { useAccount } from 'wagmi';
-import { 
-  useMintCapsule, 
-  useTransactionReceipt, 
-  LockType, 
-  Visibility 
+import {
+  useMintCapsule,
+  useTransactionReceipt,
+  LockType,
+  Visibility
 } from '@/hooks/useTimeCapsule';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
@@ -127,21 +127,21 @@ const CreateCapsule = () => {
           }
         }),
         attachments: capsuleData.attachments.map((att: any) => ({
-           id: att.id,
-           name: att.name,
-           size: att.size,
-           type: att.type,
-           // Note: File content would need to be uploaded to IPFS or similar for full on-chain storage
-           preview: att.preview ? 'preview_available' : null
-         })),
+          id: att.id,
+          name: att.name,
+          size: att.size,
+          type: att.type,
+          // Note: File content would need to be uploaded to IPFS or similar for full on-chain storage
+          preview: att.preview ? 'preview_available' : null
+        })),
         createdAt: new Date().toISOString(),
         creator: address,
         version: '1.0',
         network: 'monad-testnet'
       };
-      
+
       let encryptedURI: string;
-      
+
       try {
         // Try Unicode-safe base64 encoding first
         const jsonString = JSON.stringify(capsuleContent);
@@ -152,11 +152,11 @@ const CreateCapsule = () => {
         // Fallback: use URL encoding instead of base64
         encryptedURI = `data:application/json,${encodeURIComponent(JSON.stringify(capsuleContent))}`;
       }
-      
+
       // Calculate unlock timestamp
       let unlockValue: bigint;
       let contractLockType: LockType;
-      
+
       if (capsuleData.lockType === 'time') {
         unlockValue = BigInt(Math.floor(new Date(capsuleData.unlockDate).getTime() / 1000));
         contractLockType = LockType.TIME_BASED;
@@ -164,9 +164,9 @@ const CreateCapsule = () => {
         unlockValue = BigInt(capsuleData.blockNumber || '0');
         contractLockType = LockType.BLOCK_BASED;
       }
-      
+
       const visibility = capsuleData.isPrivate ? Visibility.PRIVATE : Visibility.PUBLIC;
-      
+
       // Mint the capsule
       mintCapsule(encryptedURI, unlockValue, contractLockType, visibility);
       setStep(4);
@@ -189,14 +189,14 @@ const CreateCapsule = () => {
       //@ts-ignore
       preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null
     }));
-    
+
     setCapsuleData({
       ...capsuleData,
       //@ts-ignore
       attachments: [...capsuleData.attachments, ...newAttachments]
     });
   };
-//@ts-ignore
+  //@ts-ignore
   const removeAttachment = (id) => {
     setCapsuleData({
       ...capsuleData,
@@ -204,7 +204,7 @@ const CreateCapsule = () => {
       attachments: capsuleData.attachments.filter(att => att.id !== id)
     });
   };
-//@ts-ignore
+  //@ts-ignore
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -216,14 +216,162 @@ const CreateCapsule = () => {
   // Show wallet connection if not connected
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-black pt-12 text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-500 bg-clip-text text-transparent mb-8">
-            Connect Your Wallet
-          </h1>
-          <p className="text-gray-400 mb-8">Connect your wallet to create time capsules on Monad</p>
-          <ConnectButton />
+      <div className="min-h-screen bg-black pt-12 text-white flex items-center justify-center relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-black to-black" />
+
+          {/* Animated Blobs */}
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/20 rounded-full blur-[120px]"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px]"
+            animate={{
+              x: [0, -70, 0],
+              y: [0, 40, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
+
+          {/* Rolls Royce Starlight Effect - Enhanced Density */}
+          <div className="absolute inset-0">
+            {[...Array(120)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute bg-white rounded-full"
+                initial={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random(),
+                  scale: Math.random() * 0.5 + 0.5,
+                }}
+                animate={{
+                  opacity: [0.1, 1, 0.1],
+                  scale: [0.5, 1.2, 0.5],
+                }}
+                transition={{
+                  duration: Math.random() * 3 + 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: Math.random() * 5,
+                }}
+                style={{
+                  width: Math.random() < 0.3 ? '3px' : '1px',
+                  height: Math.random() < 0.3 ? '3px' : '1px',
+                  boxShadow: Math.random() < 0.3 ? '0 0 6px rgba(255,255,255,0.9)' : 'none'
+                }}
+              />
+            ))}
+          </div>
         </div>
+
+        {/* Content Card with Enhanced Animation */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          whileHover={{ scale: 1.01, boxShadow: "0 0 30px rgba(6,182,212,0.15)" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative z-10 p-1 bg-gradient-to-br from-cyan-500/30 via-white/5 to-cyan-500/10 rounded-3xl"
+        >
+          <div className="bg-black/80 backdrop-blur-2xl border border-white/10 rounded-[22px] p-12 md:p-16 text-center max-w-lg w-full shadow-2xl relative overflow-hidden group transition-all duration-500 hover:bg-black/50">
+            {/* Inner Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50 blur-sm" />
+
+            <div className="relative z-10 flex flex-col items-center">
+
+              {/* Animated Hourglass Icon */}
+              <motion.div
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="w-24 h-24 bg-cyan-500/5 rounded-full flex items-center justify-center border border-cyan-500/20 mb-10 mx-auto relative group-hover:border-cyan-400/50 transition-colors duration-500"
+              >
+                <div className="absolute inset-0 bg-cyan-400/10 rounded-full blur-xl animate-pulse group-hover:bg-cyan-400/20 transition-all duration-500" />
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  className="relative z-10"
+                >
+                  <Clock className="w-10 h-10 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                </motion.div>
+
+                {/* Thin spinning ring */}
+                <div className="absolute inset-[-4px] border border-cyan-500/20 rounded-full animate-spin-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent mb-6 font-space-grotesk">
+                Connect Your Wallet
+              </h1>
+
+              <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+                Connect your wallet to create time capsules on Monad
+              </p>
+
+              <ConnectButton.Custom>
+                {({
+                  account,
+                  chain,
+                  openAccountModal,
+                  openChainModal,
+                  openConnectModal,
+                  authenticationStatus,
+                  mounted,
+                }) => {
+                  const ready = mounted && authenticationStatus !== 'loading';
+                  const connected =
+                    ready &&
+                    account &&
+                    chain &&
+                    (!authenticationStatus ||
+                      authenticationStatus === 'authenticated');
+
+                  return (
+                    <div
+                      {...(!ready && {
+                        'aria-hidden': true,
+                        'style': {
+                          opacity: 0,
+                          pointerEvents: 'none',
+                          userSelect: 'none',
+                        },
+                      })}
+                    >
+                      {(() => {
+                        if (!connected) {
+                          return (
+                            <motion.button
+                              onClick={openConnectModal}
+                              type="button"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="group relative px-8 py-4 bg-cyan-500 text-black font-bold rounded-xl text-lg flex items-center gap-3 overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_35px_rgba(34,211,238,0.5)] transition-shadow duration-300"
+                            >
+                              <span className="relative z-10 flex items-center gap-2">
+                                <Zap className="w-5 h-5 fill-current" />
+                                Connect Wallet
+                              </span>
+                              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                              <div className="absolute inset-0 shadow-[0_0_20px_rgba(34,211,238,0.6)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </motion.button>
+                          );
+                        }
+                        return <ConnectButton />;
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
+            </div>
+          </div>
+        </motion.div>
       </div>
     );
   }
@@ -276,9 +424,8 @@ const CreateCapsule = () => {
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-center">
                 <motion.div
-                  className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
-                    i <= step ? 'border-cyan-400 bg-cyan-400/20 text-cyan-400' : 'border-gray-600 text-gray-600'
-                  }`}
+                  className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${i <= step ? 'border-cyan-400 bg-cyan-400/20 text-cyan-400' : 'border-gray-600 text-gray-600'
+                    }`}
                   animate={{ scale: i === step ? 1.1 : 1 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
@@ -315,12 +462,11 @@ const CreateCapsule = () => {
                     {capsuleTypes.map((type) => (
                       <motion.button
                         key={type.id}
-                        onClick={() => setCapsuleData({...capsuleData, type: type.id})}
-                        className={`p-4 rounded-xl border-2 transition-all ${
-                          capsuleData.type === type.id
-                            ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/25'
-                            : 'border-gray-700 hover:border-gray-600'
-                        }`}
+                        onClick={() => setCapsuleData({ ...capsuleData, type: type.id })}
+                        className={`p-4 rounded-xl border-2 transition-all ${capsuleData.type === type.id
+                          ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/25'
+                          : 'border-gray-700 hover:border-gray-600'
+                          }`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -340,7 +486,7 @@ const CreateCapsule = () => {
                     <input
                       type="text"
                       value={capsuleData.title}
-                      onChange={(e) => setCapsuleData({...capsuleData, title: e.target.value})}
+                      onChange={(e) => setCapsuleData({ ...capsuleData, title: e.target.value })}
                       className="w-full p-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:border-cyan-400 focus:outline-none transition-colors"
                       placeholder="Enter capsule title..."
                     />
@@ -348,22 +494,21 @@ const CreateCapsule = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       {capsuleData.type === 'prediction' ? 'Prediction Statement (Required)' :
-                       capsuleData.type === 'secret' ? 'Secret Content (Required)' :
-                       capsuleData.type === 'art' ? 'Message (Optional)' : 'Message'}
+                        capsuleData.type === 'secret' ? 'Secret Content (Required)' :
+                          capsuleData.type === 'art' ? 'Message (Optional)' : 'Message'}
                     </label>
                     <textarea
                       value={capsuleData.message}
-                      onChange={(e) => setCapsuleData({...capsuleData, message: e.target.value})}
+                      onChange={(e) => setCapsuleData({ ...capsuleData, message: e.target.value })}
                       rows={6}
-                      className={`w-full p-3 bg-gray-900/50 border rounded-lg focus:outline-none transition-colors ${
-                        (capsuleData.type === 'prediction' || capsuleData.type === 'secret') && !capsuleData.message?.trim()
-                          ? 'border-red-500 focus:border-red-400'
-                          : 'border-gray-700 focus:border-cyan-400'
-                      }`}
+                      className={`w-full p-3 bg-gray-900/50 border rounded-lg focus:outline-none transition-colors ${(capsuleData.type === 'prediction' || capsuleData.type === 'secret') && !capsuleData.message?.trim()
+                        ? 'border-red-500 focus:border-red-400'
+                        : 'border-gray-700 focus:border-cyan-400'
+                        }`}
                       placeholder={
                         capsuleData.type === 'prediction' ? 'Enter your prediction about the future...' :
-                        capsuleData.type === 'secret' ? 'Enter your secret content...' :
-                        'What would you like to preserve for the future?'
+                          capsuleData.type === 'secret' ? 'Enter your secret content...' :
+                            'What would you like to preserve for the future?'
                       }
                       required={capsuleData.type === 'prediction' || capsuleData.type === 'secret'}
                     />
@@ -385,7 +530,7 @@ const CreateCapsule = () => {
                         min="0"
                         max="100"
                         value={capsuleData.predictionConfidence}
-                        onChange={(e) => setCapsuleData({...capsuleData, predictionConfidence: parseInt(e.target.value)})}
+                        onChange={(e) => setCapsuleData({ ...capsuleData, predictionConfidence: parseInt(e.target.value) })}
                         className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                         style={{
                           background: `linear-gradient(to right, #ef4444 0%, #eab308 50%, #22c55e 100%)`,
@@ -407,7 +552,7 @@ const CreateCapsule = () => {
                       <label className="block text-sm font-medium text-gray-300 mb-2">Secret Category</label>
                       <select
                         value={capsuleData.secretCategory}
-                        onChange={(e) => setCapsuleData({...capsuleData, secretCategory: e.target.value})}
+                        onChange={(e) => setCapsuleData({ ...capsuleData, secretCategory: e.target.value })}
                         className="w-full p-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:border-cyan-400 focus:outline-none transition-colors"
                       >
                         <option value="personal">Personal Secret</option>
@@ -422,7 +567,7 @@ const CreateCapsule = () => {
                       </p>
                     </div>
                   )}
-                  
+
                   {/* Media URI Input */}
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -431,24 +576,22 @@ const CreateCapsule = () => {
                     <input
                       type="url"
                       value={capsuleData.mediaUri || ''}
-                      onChange={(e) => setCapsuleData({...capsuleData, mediaUri: e.target.value})}
-                      className={`w-full p-3 bg-gray-900/50 border rounded-lg focus:outline-none transition-colors ${
-                        capsuleData.type === 'art' && !capsuleData.mediaUri?.trim()
-                          ? 'border-red-500 focus:border-red-400'
-                          : 'border-gray-700 focus:border-cyan-400'
-                      }`}
+                      onChange={(e) => setCapsuleData({ ...capsuleData, mediaUri: e.target.value })}
+                      className={`w-full p-3 bg-gray-900/50 border rounded-lg focus:outline-none transition-colors ${capsuleData.type === 'art' && !capsuleData.mediaUri?.trim()
+                        ? 'border-red-500 focus:border-red-400'
+                        : 'border-gray-700 focus:border-cyan-400'
+                        }`}
                       placeholder="https://example.com/image.jpg or https://example.com/video.mp4"
                       required={capsuleData.type === 'art'}
                     />
-                    <p className={`text-xs mt-1 ${
-                      capsuleData.type === 'art' && !capsuleData.mediaUri?.trim()
-                        ? 'text-red-400'
-                        : 'text-gray-500'
-                    }`}>
-                      {capsuleData.type === 'art' 
-                        ? (capsuleData.mediaUri?.trim() 
-                            ? 'Image URL is required for digital art capsules' 
-                            : '⚠️ Image URL is required for digital art capsules')
+                    <p className={`text-xs mt-1 ${capsuleData.type === 'art' && !capsuleData.mediaUri?.trim()
+                      ? 'text-red-400'
+                      : 'text-gray-500'
+                      }`}>
+                      {capsuleData.type === 'art'
+                        ? (capsuleData.mediaUri?.trim()
+                          ? 'Image URL is required for digital art capsules'
+                          : '⚠️ Image URL is required for digital art capsules')
                         : 'Add a direct link to an image or video to include in your capsule'
                       }
                     </p>
@@ -466,7 +609,7 @@ const CreateCapsule = () => {
                 >
                   <div className="border-t border-gray-800 pt-8">
                     <h3 className="text-2xl font-semibold text-cyan-400 mb-6">Add Digital Assets</h3>
-                    
+
                     {/* Asset Type Upload Buttons */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                       {assetTypes.map((asset) => (
@@ -501,7 +644,7 @@ const CreateCapsule = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {capsuleData.attachments.map((attachment) => (
                             <motion.div
-                            // @ts-ignore
+                              // @ts-ignore
                               key={attachment.id}
                               initial={{ opacity: 0, scale: 0.8 }}
                               animate={{ opacity: 1, scale: 1 }}
@@ -509,7 +652,7 @@ const CreateCapsule = () => {
                             >
                               {/* Remove button */}
                               <button
-                              //@ts-ignore
+                                //@ts-ignore
                                 onClick={() => removeAttachment(attachment.id)}
                                 className="absolute top-2 right-2 w-6 h-6 bg-red-500/20 hover:bg-red-500/40 rounded-full flex items-center justify-center transition-colors"
                               >
@@ -521,7 +664,7 @@ const CreateCapsule = () => {
                                 {/* @ts-ignore */}
                                 {attachment.preview ? (
                                   <img
-                                  //@ts-ignore
+                                    //@ts-ignore
                                     src={attachment.preview}
                                     //@ts-ignore
                                     alt={attachment.name}
@@ -600,12 +743,11 @@ const CreateCapsule = () => {
                     {lockTypes.map((lock) => (
                       <motion.button
                         key={lock.id}
-                        onClick={() => setCapsuleData({...capsuleData, lockType: lock.id})}
-                        className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
-                          capsuleData.lockType === lock.id
-                            ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/25'
-                            : 'border-gray-700 hover:border-gray-600'
-                        }`}
+                        onClick={() => setCapsuleData({ ...capsuleData, lockType: lock.id })}
+                        className={`w-full p-4 rounded-xl border-2 transition-all text-left ${capsuleData.lockType === lock.id
+                          ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/25'
+                          : 'border-gray-700 hover:border-gray-600'
+                          }`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -630,7 +772,7 @@ const CreateCapsule = () => {
                       <input
                         type="datetime-local"
                         value={capsuleData.unlockDate}
-                        onChange={(e) => setCapsuleData({...capsuleData, unlockDate: e.target.value})}
+                        onChange={(e) => setCapsuleData({ ...capsuleData, unlockDate: e.target.value })}
                         className="w-full p-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:border-cyan-400 focus:outline-none"
                       />
                     </div>
@@ -641,7 +783,7 @@ const CreateCapsule = () => {
                       <input
                         type="number"
                         value={capsuleData.blockNumber}
-                        onChange={(e) => setCapsuleData({...capsuleData, blockNumber: e.target.value})}
+                        onChange={(e) => setCapsuleData({ ...capsuleData, blockNumber: e.target.value })}
                         className="w-full p-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:border-cyan-400 focus:outline-none"
                         placeholder="e.g., 18500000"
                       />
@@ -652,20 +794,20 @@ const CreateCapsule = () => {
                       <label className="block text-sm font-medium text-gray-300 mb-2">Unlock Condition</label>
                       <textarea
                         value={capsuleData.condition}
-                        onChange={(e) => setCapsuleData({...capsuleData, condition: e.target.value})}
+                        onChange={(e) => setCapsuleData({ ...capsuleData, condition: e.target.value })}
                         rows={4}
                         className="w-full p-3 bg-gray-900/50 border border-gray-700 rounded-lg focus:border-cyan-400 focus:outline-none"
                         placeholder="Describe the condition for community voting..."
                       />
                     </div>
                   )}
-                  
+
                   <div className="flex items-center space-x-3">
                     <input
                       type="checkbox"
                       id="private"
                       checked={capsuleData.isPrivate}
-                      onChange={(e) => setCapsuleData({...capsuleData, isPrivate: e.target.checked})}
+                      onChange={(e) => setCapsuleData({ ...capsuleData, isPrivate: e.target.checked })}
                       className="w-4 h-4 text-cyan-400 border-gray-700 rounded focus:ring-cyan-400"
                     />
                     <label htmlFor="private" className="text-sm text-gray-300">
@@ -688,7 +830,7 @@ const CreateCapsule = () => {
             >
               <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-8">
                 <h3 className="text-2xl font-semibold text-cyan-400 mb-6">Review Your Capsule</h3>
-                
+
                 <div className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -700,7 +842,7 @@ const CreateCapsule = () => {
                       <p className="text-white font-medium capitalize">{capsuleData.type}</p>
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="text-sm text-gray-400">Message</label>
                     <p className="text-white mt-1 p-3 bg-gray-800/50 rounded-lg">
@@ -727,7 +869,7 @@ const CreateCapsule = () => {
                           <span className="text-white font-medium">{capsuleData.predictionConfidence}%</span>
                           <div className="flex-1 mx-4">
                             <div className="w-full bg-gray-700 rounded-full h-2">
-                              <div 
+                              <div
                                 className="bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 h-2 rounded-full"
                                 style={{ width: `${capsuleData.predictionConfidence}%` }}
                               />
@@ -735,9 +877,9 @@ const CreateCapsule = () => {
                           </div>
                           <span className="text-xs text-gray-400">
                             {capsuleData.predictionConfidence >= 80 ? 'Very Confident' :
-                             capsuleData.predictionConfidence >= 60 ? 'Confident' :
-                             capsuleData.predictionConfidence >= 40 ? 'Somewhat Confident' :
-                             'Not Very Confident'}
+                              capsuleData.predictionConfidence >= 60 ? 'Confident' :
+                                capsuleData.predictionConfidence >= 40 ? 'Somewhat Confident' :
+                                  'Not Very Confident'}
                           </span>
                         </div>
                       </div>
@@ -771,7 +913,7 @@ const CreateCapsule = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="text-sm text-gray-400">Lock Type</label>
@@ -783,7 +925,7 @@ const CreateCapsule = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* <div className="mt-8 p-4 bg-cyan-400/10 border border-cyan-400/30 rounded-lg">
                   <p className="text-sm text-cyan-300">
                     <strong>Estimated minting cost:</strong> {0.025 + (capsuleData.attachments.length * 0.01)} ETH + gas fees
@@ -840,7 +982,7 @@ const CreateCapsule = () => {
                       ✓
                     </motion.div>
                   </motion.div>
-                  
+
                   <h3 className="text-3xl font-bold text-green-400 mb-4">Capsule Created!</h3>
                   <p className="text-gray-400 mb-8">
                     Your time capsule has been successfully minted and stored on the Monad blockchain.
@@ -850,12 +992,12 @@ const CreateCapsule = () => {
                       </span>
                     )}
                   </p>
-                  
+
                   {hash && (
                     <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-8">
                       <p className="text-sm text-gray-400 mb-2">Transaction Hash</p>
                       <p className="font-mono text-cyan-400 break-all text-sm">{hash}</p>
-                      <a 
+                      <a
                         href={`https://testnet.monadexplorer.com/tx/${hash}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -882,7 +1024,7 @@ const CreateCapsule = () => {
                   )}
                 </div>
               )}
-              
+
               <motion.button
                 className="px-8 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg font-medium transition-colors"
                 whileHover={{ scale: 1.05 }}
@@ -918,7 +1060,7 @@ const CreateCapsule = () => {
             >
               Previous
             </motion.button>
-            
+
             <motion.button
               onClick={step === 3 ? handleSubmit : handleNext}
               className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-cyan-600 hover:from-cyan-700 hover:to-cyan-700 rounded-lg font-medium transition-all shadow-lg shadow-cyan-600/25"

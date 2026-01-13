@@ -631,6 +631,9 @@ const Hero = () => {
           />
         </div>
       </div>
+
+      {/* Neon Separator Line */}
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent shadow-[0_0_15px_rgba(6,182,212,0.8)] z-40 opacity-80" />
     </div>
   )
 }
