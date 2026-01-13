@@ -92,7 +92,7 @@ const Roadmap = () => {
             title: "Phase 01: The Foundation",
             date: "Q4 2025",
             status: "completed",
-            note: "I remember that first night... 3 AM, cold coffee, and the first successful capsule mint. It felt like magic. We're actually doing this.",
+            note: "Protocol Initialization complete. Core systems stabilized. The foundation for decentralized temporal storage is now immutable.",
             items: [
                 "Started 3 months ago",
                 "Protocol Core on Rust/Anchor",
@@ -104,7 +104,7 @@ const Roadmap = () => {
             title: "Phase 02: Token Ignition",
             date: "Q1 2026",
             status: "current",
-            note: "Pump.fun is going to be wild. I'm nervous, but the tech is solid. The community is growing every day. Let's send it.",
+            note: "Network Ignition sequence engaged. Pump.fun launch parameters set. Community uplink established. Executing mass adoption protocols.",
             items: [
                 "Fair Launch on Pump.fun",
                 "Raydium DEX Listing",
@@ -116,7 +116,7 @@ const Roadmap = () => {
             title: "Phase 03: The Expansion",
             date: "Q2 2026",
             status: "upcoming",
-            note: "Tired of sleep, but the CEX listings won't wait. Everything must be perfect. No compromises on security.",
+            note: "Expansion mode active. Integrating CEX nodes and scaling infrastructure. Security protocols running at maximum efficiency. Global reach imminent.",
             items: [
                 "Capsulr Pass NFT Collection",
                 "CoinGecko & CMC Listing",
@@ -201,7 +201,7 @@ const Roadmap = () => {
                         />
                     </div>
 
-                    <div className="space-y-40">
+                    <div className="space-y-20 md:space-y-40">
                         {phases.map((phase, index) => (
                             <div key={index} className={`relative flex flex-col md:flex-row items-center justify-center gap-16 md:gap-0`}>
 
@@ -260,19 +260,19 @@ const Roadmap = () => {
 
 
                                 {phase.note && (
-                                    <div className={`w-full md:w-[45%] hidden md:block ${index % 2 === 0 ? 'md:order-3 md:pl-24' : 'md:order-1 md:pr-24 text-right'}`}>
+                                    <div className={`w-full md:w-[45%] mt-6 md:mt-0 ${index % 2 === 0 ? 'md:order-3 md:pl-24' : 'md:order-1 md:pr-24 text-left md:text-right'} pl-16 md:pl-0`}>
                                         <div className="relative">
                                             <span className="absolute -left-6 -top-6 text-6xl opacity-10 font-serif text-cyan-100">“</span>
 
                                             <motion.div
-                                                initial={{ width: 0, opacity: 0 }}
-                                                whileInView={{ width: "100%", opacity: 1 }}
-                                                viewport={{ once: true, margin: "-100px" }}
-                                                transition={{ duration: 1.5, ease: "linear" }}
-                                                className="overflow-hidden"
+                                                initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                                                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                                viewport={{ once: true, amount: 0.4 }}
+                                                transition={{ duration: 0.8, ease: "easeOut" }}
+                                                className="relative"
                                             >
-                                                <div className="font-dancing text-2xl md:text-3xl text-cyan-100/70 leading-relaxed whitespace-pre-wrap py-2 group cursor-default relative inline-block">
-                                                    <span className="group-hover:text-cyan-300 group-hover:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] transition-all duration-300">
+                                                <div className="font-dancing text-xl md:text-3xl text-cyan-50/90 leading-relaxed whitespace-pre-wrap py-2 group cursor-default relative inline-block">
+                                                    <span className="group-hover:text-cyan-300 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-300">
                                                         {phase.note}
                                                     </span>
                                                 </div>
@@ -319,21 +319,26 @@ const Roadmap = () => {
                                                 The official Capsulr smart contract address on Solana. Use this to verify protocol interactions or for direct liquidity swaps on decentralized exchanges.
                                             </p>
 
-                                            <div className="bg-black/40 rounded-xl border border-cyan-500/20 p-5 mb-6 relative group/ca overflow-hidden transition-all duration-300 hover:bg-black/60 hover:border-cyan-500/40">
-                                                <div className="font-mono text-base md:text-lg text-cyan-50 break-all tracking-wide relative z-10">
+                                            <div className="bg-black/40 rounded-xl border border-cyan-500/40 p-5 mb-6 relative group/ca overflow-hidden transition-all duration-300 hover:bg-black/60 hover:border-cyan-400 shadow-[0_0_20px_-5px_rgba(34,211,238,0.15)]">
+                                                <div className="font-mono text-lg md:text-xl font-bold text-cyan-50 break-all tracking-wide relative z-10 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">
                                                     {contractAddress}
                                                 </div>
                                                 {/* Scanning scanline inside CA box */}
                                                 <div className="absolute top-0 left-0 h-full w-[2px] bg-cyan-400/50 shadow-[0_0_15px_cyan] animate-[scan-horizontal_3s_ease-in-out_infinite] opacity-0 group-hover/ca:opacity-100 transition-opacity" />
                                             </div>
 
-                                            <button
+                                            <motion.button
+                                                whileTap={{ scale: 0.95 }}
                                                 onClick={handleCopy}
-                                                className="flex items-center gap-3 px-6 py-3 rounded-lg bg-white/5 hover:bg-cyan-500/10 border border-cyan-500/20 hover:border-cyan-500/40 transition-all font-medium text-sm text-gray-300 hover:text-cyan-300 group/btn"
+                                                className={`flex items-center gap-3 px-6 py-3 rounded-lg border transition-all font-bold text-sm group/btn relative overflow-hidden ${isCopied
+                                                    ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                                                    : "bg-cyan-500/10 border-cyan-500/30 text-cyan-100 hover:bg-cyan-500/20 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+                                                    }`}
                                             >
-                                                {isCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 group-hover/btn:text-cyan-400 transition-colors" />}
-                                                <span>{isCopied ? "Address Copied" : "Copy Address"}</span>
-                                            </button>
+                                                {isCopied && <div className="absolute inset-0 bg-emerald-500/10 animate-ping" />}
+                                                {isCopied ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5 group-hover/btn:text-white transition-colors" />}
+                                                <span>{isCopied ? "Address Copied!" : "Copy Contract Address"}</span>
+                                            </motion.button>
                                         </div>
                                     </div>
 

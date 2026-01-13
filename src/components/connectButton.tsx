@@ -2,15 +2,14 @@
 import { useEffect, useRef, useState } from "react";
 import {
   WalletButton,
-
   useChainModal,
 } from "@rainbow-me/rainbowkit";
 import { useAccount, useDisconnect } from "wagmi";
-
+import { motion, AnimatePresence } from "framer-motion";
 
 export const ConnectBtn = () => {
   const { isConnecting, isConnected, chain } = useAccount();
- 
+
   const { openChainModal } = useChainModal();
   const { disconnect } = useDisconnect();
   const isMounted = useRef(false);
@@ -20,171 +19,168 @@ export const ConnectBtn = () => {
     isMounted.current = true;
   }, []);
 
+  // Close popup when clicking outside (optional but good UX)
+  const popupRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        setShowWallets(false);
+      }
+    };
+    if (showWallets) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showWallets]);
+
   if (!isConnected) {
-    if (!showWallets) {
-      return (
+    return (
+      <div className="relative" ref={popupRef}>
         <button
-          onClick={() => setShowWallets(true)}
+          onClick={() => setShowWallets(!showWallets)}
           disabled={isConnecting}
           className="
             relative overflow-hidden
-            
-            px-4 py-2  
-            bg-black border-1 border-cyan-400 
-            text-white text-sm
-            rounded-lg 
+            px-5 py-2.5  
+            bg-black border border-cyan-400/50
+            text-white text-sm font-medium
+            rounded-xl
             transition-all duration-300 ease-out
-            hover:bg-cyan-400 hover:text-black 
-            hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]
+            hover:bg-cyan-500 hover:text-black hover:border-cyan-400
+            hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]
             disabled:opacity-50 disabled:cursor-not-allowed
             disabled:hover:bg-black disabled:hover:text-white
-            before:absolute before:inset-0 
-            before:bg-gradient-to-r before:from-transparent before:via-cyan-400/20 before:to-transparent
-            before:translate-x-[-100%] before:transition-transform before:duration-500
-            hover:before:translate-x-[100%]
+            group
           "
         >
-          {isConnecting ? (
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 border border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-              Connecting...
-            </div>
-          ) : (
-            "Connect Wallet"
-          )}
+          <span className="relative z-10 flex items-center gap-2">
+            {isConnecting ? (
+              <>
+                <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                Connecting...
+              </>
+            ) : (
+              "Connect Wallet"
+            )}
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700" />
         </button>
-      );
-    }
 
-    return (
-      <div className="relative">
-        <div className="flex absolute  top-8 flex-col gap-2 p-4 bg-stone-900/95 border-2 border-cyan-400/60 rounded-lg backdrop-blur-sm">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="text-white bg-gradient-to-br from-cyan-400 via-cyan-500 to-cyan-600 bg-clip-text font-semibold text-sm">Choose Wallet</h3>
-            <button
-              onClick={() => setShowWallets(false)}
-              disabled={isConnecting}
-              className="text-cyan-400 hover:text-white transition-colors text-lg leading-none disabled:opacity-50"
+        <AnimatePresence>
+          {showWallets && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="absolute top-14 right-0 w-72 z-50 origin-top-right"
             >
-              ×
-            </button>
-          </div>
-          
-          {/* MetaMask */}
-          <WalletButton.Custom wallet="metaMask">
-            {({ ready, connect }) => (
-              <button
-                type="button"
-                disabled={!ready || isConnecting}
-                onClick={connect}
-                className="
-                  relative overflow-hidden
-                  w-full px-3 py-2 
-                  bg-black border border-cyan-400/40 
-                  text-white font-medium text-sm
-                  rounded-md 
-                  transition-all duration-300 ease-out
-                  hover:bg-cyan-400 hover:text-black hover:border-cyan-400
-                  hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  disabled:hover:bg-black disabled:hover:text-cyan-400
-                  flex items-center justify-center gap-2
-                "
-              >
-                {isConnecting ? (
-                  <>
-                    <div className="w-3 h-3 border border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                    Connecting...
-                  </>
-                ) : (
-                  <>
-                    <span>🦊</span>
-                    MetaMask
-                  </>
-                )}
-              </button>
-            )}
-          </WalletButton.Custom>
+              <div className="flex flex-col gap-3 p-5 bg-black/95 border border-cyan-500/30 rounded-2xl backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(34,211,238,0.2)]">
+                <div className="flex justify-between items-center mb-1">
+                  <h3 className="text-white bg-gradient-to-r from-cyan-400 to-cyan-200 bg-clip-text text-transparent font-bold text-sm tracking-widest uppercase">Select Wallet</h3>
+                  <button
+                    onClick={() => setShowWallets(false)}
+                    className="text-gray-500 hover:text-white transition-colors p-1 rounded-full hover:bg-white/10"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                  </button>
+                </div>
 
-          {/* Coinbase Wallet */}
-          <WalletButton.Custom wallet="coinbase">
-            {({ ready, connect }) => (
-              <button
-                type="button"
-                disabled={!ready || isConnecting}
-                onClick={connect}
-                className="
-                  relative overflow-hidden
-                  w-full px-3 py-2 
-                  bg-black border border-cyan-400/40 
-                  text-white font-medium text-sm
-                  rounded-md 
-                  transition-all duration-300 ease-out
-                  hover:bg-cyan-400 hover:text-black hover:border-cyan-400
-                  hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  disabled:hover:bg-black disabled:hover:text-cyan-400
-                  flex items-center justify-center gap-2
-                "
-              >
-                {isConnecting ? (
-                  <>
-                    <div className="w-3 h-3 border border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                    Connecting...
-                  </>
-                ) : (
-                  <>
-                    <span>🔵</span>
-                    Coinbase
-                  </>
-                )}
-              </button>
-            )}
-          </WalletButton.Custom>
+                <div className="space-y-2.5">
+                  {/* MetaMask */}
+                  <WalletButton.Custom wallet="metaMask">
+                    {({ ready, connect }) => (
+                      <button
+                        type="button"
+                        disabled={!ready || isConnecting}
+                        onClick={connect}
+                        className="
+                          group relative w-full px-4 py-3.5
+                          bg-white/5 border border-white/5
+                          text-gray-200 font-medium text-sm
+                          rounded-xl
+                          transition-all duration-300
+                          hover:border-cyan-500/50 hover:bg-cyan-500/10 hover:text-white
+                          disabled:opacity-50 disabled:cursor-not-allowed
+                          flex items-center justify-start gap-4
+                        "
+                      >
+                        <span className="text-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🦊</span>
+                        <div className="flex flex-col items-start leading-none gap-1">
+                          <span className="group-hover:text-cyan-300 transition-colors">MetaMask</span>
+                        </div>
+                        {isConnecting && <div className="ml-auto w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />}
+                      </button>
+                    )}
+                  </WalletButton.Custom>
 
-          {/* Phantom Wallet */}
-          <WalletButton.Custom wallet="phantom">
-            {({ ready, connect }) => (
-              <button
-                type="button"
-                disabled={!ready || isConnecting}
-                onClick={connect}
-                className="
-                  relative overflow-hidden
-                  w-full px-3 py-2 
-                  bg-black border border-cyan-400/40 
-                  text-white font-medium text-sm
-                  rounded-md 
-                  transition-all duration-300 ease-out
-                  hover:bg-cyan-400 hover:text-black hover:border-cyan-400
-                  hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  disabled:hover:bg-black disabled:hover:text-cyan-400
-                  flex items-center justify-center gap-2
-                "
-              >
-                {isConnecting ? (
-                  <>
-                    <div className="w-3 h-3 border border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                    Connecting...
-                  </>
-                ) : (
-                  <>
-                    <span>👻</span>
-                    Phantom
-                  </>
-                )}
-              </button>
-            )}
-          </WalletButton.Custom>
-        </div>
+                  {/* Coinbase Wallet */}
+                  <WalletButton.Custom wallet="coinbase">
+                    {({ ready, connect }) => (
+                      <button
+                        type="button"
+                        disabled={!ready || isConnecting}
+                        onClick={connect}
+                        className="
+                          group relative w-full px-4 py-3.5
+                          bg-white/5 border border-white/5
+                          text-gray-200 font-medium text-sm
+                          rounded-xl
+                          transition-all duration-300
+                          hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-white
+                          disabled:opacity-50 disabled:cursor-not-allowed
+                          flex items-center justify-start gap-4
+                        "
+                      >
+                        <span className="text-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🔵</span>
+                        <div className="flex flex-col items-start leading-none gap-1">
+                          <span className="group-hover:text-blue-300 transition-colors">Coinbase</span>
+                        </div>
+                        {isConnecting && <div className="ml-auto w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />}
+                      </button>
+                    )}
+                  </WalletButton.Custom>
+
+                  {/* Phantom Wallet */}
+                  <WalletButton.Custom wallet="phantom">
+                    {({ ready, connect }) => (
+                      <button
+                        type="button"
+                        disabled={!ready || isConnecting}
+                        onClick={connect}
+                        className="
+                          group relative w-full px-4 py-3.5
+                          bg-white/5 border border-white/5
+                          text-gray-200 font-medium text-sm
+                          rounded-xl
+                          transition-all duration-300
+                          hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-white
+                          disabled:opacity-50 disabled:cursor-not-allowed
+                          flex items-center justify-start gap-4
+                        "
+                      >
+                        <span className="text-2xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">👻</span>
+                        <div className="flex flex-col items-start leading-none gap-1">
+                          <span className="group-hover:text-purple-300 transition-colors">Phantom</span>
+                        </div>
+                        {isConnecting && <div className="ml-auto w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />}
+                      </button>
+                    )}
+                  </WalletButton.Custom>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   }
 
   if (isConnected && !chain) {
     return (
-      <button 
+      <button
         className="
           px-4 py-2 
           bg-red-600 border-2 border-red-400 
@@ -192,7 +188,7 @@ export const ConnectBtn = () => {
           rounded-lg 
           transition-all duration-300
           hover:bg-red-500 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]
-        " 
+        "
         onClick={openChainModal}
       >
         Wrong network
@@ -202,12 +198,8 @@ export const ConnectBtn = () => {
 
   return (
     <div className="max-w-5xl w-full flex items-center justify-between gap-4">
-     
-      
       <div className="flex gap-3">
-       
-        
-        <button 
+        <button
           className="
             px-4 py-2 
             bg-gradient-to-r from-red-900 to-red-800 
@@ -219,7 +211,7 @@ export const ConnectBtn = () => {
             hover:shadow-[0_0_20px_rgba(248,113,113,0.4)]
             hover:from-red-800 hover:to-red-900
             active:scale-95
-          " 
+          "
           onClick={() => disconnect()}
         >
           Disconnect

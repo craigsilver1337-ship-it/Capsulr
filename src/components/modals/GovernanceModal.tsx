@@ -134,8 +134,8 @@ const GovernanceModal = ({ isOpen, onClose }: GovernanceModalProps) => {
                             <div className="flex-1 flex flex-col bg-white/[0.02]">
                                 {/* Top Stats Bar */}
                                 <div className="h-20 border-b border-white/5 flex items-center justify-between px-8 relative">
-                                    <div className="flex gap-8">
-                                        <div className="flex flex-col">
+                                    <div className="flex gap-4 sm:gap-8 overflow-x-auto hide-scrollbar pb-2 sm:pb-0">
+                                        <div className="flex flex-col min-w-max">
                                             <span className="text-[10px] text-gray-500 uppercase tracking-wider">Total Locked</span>
                                             <div className="flex items-center gap-2">
                                                 <Coins className="w-4 h-4 text-amber-400" />
@@ -143,7 +143,7 @@ const GovernanceModal = ({ isOpen, onClose }: GovernanceModalProps) => {
                                                 <span className="text-xs text-gray-500">$CAPS</span>
                                             </div>
                                         </div>
-                                        <div className="w-px h-8 bg-white/5 my-auto" />
+                                        <div className="hidden sm:block w-px h-8 bg-white/5 my-auto" />
                                         <div className="flex flex-col">
                                             <span className="text-[10px] text-gray-500 uppercase tracking-wider">Active Proposals</span>
                                             <div className="flex items-center gap-2">
@@ -151,7 +151,7 @@ const GovernanceModal = ({ isOpen, onClose }: GovernanceModalProps) => {
                                                 <span className="text-xl font-bold font-mono text-white">03</span>
                                             </div>
                                         </div>
-                                        <div className="w-px h-8 bg-white/5 my-auto hidden sm:block" />
+                                        <div className="hidden sm:block w-px h-8 bg-white/5 my-auto" />
                                         <div className="flex-col hidden sm:flex">
                                             <span className="text-[10px] text-gray-500 uppercase tracking-wider">DAO Members</span>
                                             <div className="flex items-center gap-2">

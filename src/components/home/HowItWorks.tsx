@@ -84,8 +84,7 @@ const HowItWorks = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {/* Visual Connector - Desktop Line */}
-          <div className="hidden lg:block absolute top-[20%] left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent border-t border-dashed border-cyan-500/30 z-0" />
+          {/* Visual Connector Removed */}
 
           {steps.map((step, index) => (
             <motion.div
@@ -94,21 +93,20 @@ const HowItWorks = () => {
               whileHover={{ scale: 1.05 }}
               className="relative z-10 group"
             >
-              {/* Running Neon Border Effect from Features */}
-              <div className="absolute -inset-[1px] rounded-2xl bg-[conic-gradient(from_90deg_at_50%_50%,#00000000_50%,#22d3ee_50%,#ffffff_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-spin-slow pointer-events-none" />
-              <div className="absolute -inset-[1px] rounded-2xl bg-cyan-500/20 opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300 pointer-events-none" />
+              {/* Simplified Hover Effect */}
+              <div className="absolute -inset-[1px] rounded-2xl bg-cyan-500/0 opacity-0 group-hover:opacity-100 group-hover:bg-cyan-500/20 blur-xl transition-all duration-500 pointer-events-none" />
 
               <div
                 className="
                   relative
                   bg-black/40 backdrop-blur-xl 
-                  border border-cyan-500/30 
+                  border border-white/10
                   rounded-2xl h-full p-8 
                   flex flex-col items-start
                   transition-all duration-500
-                  hover:border-cyan-400
-                  shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset]
-                  hover:shadow-[0_0_40px_-5px_rgba(34,211,238,0.4)]
+                  hover:border-cyan-400/50
+                  hover:bg-black/60
+                  hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]
                 "
               >
                 {/* Step Number & Icon Header */}

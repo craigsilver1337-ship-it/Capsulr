@@ -10,6 +10,7 @@ import {
   Visibility
 } from '@/hooks/useTimeCapsule';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { toast } from 'sonner';
 
 const CreateCapsule = () => {
   const { address, isConnected } = useAccount();
@@ -158,7 +159,14 @@ const CreateCapsule = () => {
       let contractLockType: LockType;
 
       if (capsuleData.lockType === 'time') {
-        unlockValue = BigInt(Math.floor(new Date(capsuleData.unlockDate).getTime() / 1000));
+        const timestamp = new Date(capsuleData.unlockDate).getTime();
+        if (isNaN(timestamp)) {
+          toast.error('Invalid Unlock Date', {
+            description: 'Please select a valid future date and time to lock your capsule.',
+          });
+          return;
+        }
+        unlockValue = BigInt(Math.floor(timestamp / 1000));
         contractLockType = LockType.TIME_BASED;
       } else {
         unlockValue = BigInt(capsuleData.blockNumber || '0');
@@ -377,12 +385,14 @@ const CreateCapsule = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-12 text-white overflow-hidden relative">
+    <div className="min-h-screen bg-black pt-32 text-white overflow-hidden relative">
       {/* Animated background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-black to-cyan-900/20" />
+
+        {/* Animated Blobs */}
         <motion.div
-          className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[100px]"
           animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
@@ -391,7 +401,7 @@ const CreateCapsule = () => {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px]"
           animate={{
             x: [0, -80, 0],
             y: [0, 30, 0],
@@ -399,6 +409,37 @@ const CreateCapsule = () => {
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
+
+        {/* Rolls Royce Starlight Effect - Enhanced Density */}
+        <div className="absolute inset-0">
+          {[...Array(120)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute bg-white rounded-full"
+              initial={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random(),
+                scale: Math.random() * 0.5 + 0.5,
+              }}
+              animate={{
+                opacity: [0.1, 1, 0.1],
+                scale: [0.5, 1.2, 0.5],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: Math.random() * 5,
+              }}
+              style={{
+                width: Math.random() < 0.3 ? '3px' : '1px',
+                height: Math.random() < 0.3 ? '3px' : '1px',
+                boxShadow: Math.random() < 0.3 ? '0 0 6px rgba(255,255,255,0.9)' : 'none'
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-12">
@@ -1009,18 +1050,39 @@ const CreateCapsule = () => {
                   )}
                 </div>
               ) : (
-                <div>
-                  <div className="w-24 h-24 bg-red-400/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <div className="text-red-400 text-3xl">✗</div>
-                  </div>
-                  <h3 className="text-3xl font-bold text-red-400 mb-4">Transaction Failed</h3>
-                  <p className="text-gray-400 mb-8">
+                <div className="flex flex-col items-center justify-center py-8">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                    className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6 ring-1 ring-red-500/50 shadow-[0_0_30px_-10px_rgba(239,68,68,0.5)]"
+                  >
+                    <X className="w-12 h-12 text-red-500" />
+                  </motion.div>
+
+                  <h3 className="text-3xl font-bold text-red-500 mb-2">Transaction Failed</h3>
+                  <p className="text-gray-400 mb-8 text-center max-w-md">
                     There was an error creating your capsule. Please try again.
                   </p>
+
                   {error && (
-                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-8">
-                      <p className="text-red-400 text-sm">{error.message}</p>
-                    </div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="w-full max-w-lg bg-red-950/20 border border-red-900/50 rounded-xl p-6 mb-8 backdrop-blur-sm relative overflow-hidden group"
+                    >
+                      <div className="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <p className="text-xs font-mono text-red-400/70 mb-2 uppercase tracking-widest">Error Details</p>
+                      <div className="bg-black/40 rounded-lg p-4 max-h-40 overflow-y-auto custom-scrollbar border border-red-500/10">
+                        <p className="text-red-400 text-xs font-mono break-all whitespace-pre-wrap leading-relaxed">
+                          {(() => {
+                            const msg = error.message || JSON.stringify(error);
+                            if (msg.includes("User rejected the request")) return "User rejected the request.";
+                            return msg.split('Request Arguments:')[0].split('Contract Call:')[0].trim();
+                          })()}
+                        </p>
+                      </div>
+                    </motion.div>
                   )}
                 </div>
               )}
@@ -1041,38 +1103,41 @@ const CreateCapsule = () => {
                 Create Another Capsule
               </motion.button>
             </motion.div>
-          )}
-        </AnimatePresence>
+          )
+          }
+        </AnimatePresence >
 
         {/* Navigation */}
-        {step < 4 && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex justify-between max-w-4xl mx-auto mt-12"
-          >
-            <motion.button
-              onClick={handlePrev}
-              disabled={step === 1}
-              className="px-6 py-3 border border-gray-700 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-600 transition-colors"
-              whileHover={{ scale: step > 1 ? 1.05 : 1 }}
-              whileTap={{ scale: step > 1 ? 0.95 : 1 }}
+        {
+          step < 4 && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-between max-w-4xl mx-auto mt-12"
             >
-              Previous
-            </motion.button>
+              <motion.button
+                onClick={handlePrev}
+                disabled={step === 1}
+                className="px-6 py-3 border border-gray-700 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-600 transition-colors"
+                whileHover={{ scale: step > 1 ? 1.05 : 1 }}
+                whileTap={{ scale: step > 1 ? 0.95 : 1 }}
+              >
+                Previous
+              </motion.button>
 
-            <motion.button
-              onClick={step === 3 ? handleSubmit : handleNext}
-              className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-cyan-600 hover:from-cyan-700 hover:to-cyan-700 rounded-lg font-medium transition-all shadow-lg shadow-cyan-600/25"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {step === 3 ? 'Create Capsule' : 'Next'}
-            </motion.button>
-          </motion.div>
-        )}
-      </div>
-    </div>
+              <motion.button
+                onClick={step === 3 ? handleSubmit : handleNext}
+                className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-cyan-600 hover:from-cyan-700 hover:to-cyan-700 rounded-lg font-medium transition-all shadow-lg shadow-cyan-600/25"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {step === 3 ? 'Create Capsule' : 'Next'}
+              </motion.button>
+            </motion.div>
+          )
+        }
+      </div >
+    </div >
   );
 };
 

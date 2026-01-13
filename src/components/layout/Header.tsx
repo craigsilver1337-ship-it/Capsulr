@@ -42,7 +42,7 @@ const Header = () => {
   return (
     <>
       <header
-        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl rounded-full bg-black/30 backdrop-blur-3xl border border-white/10 shadow-[0_4px_30px_-10px_rgba(34,211,238,0.2)] flex items-center justify-between px-4 md:px-6 py-3"
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl rounded-full bg-black/30 backdrop-blur-3xl border border-white/10 shadow-[0_4px_30px_-10px_rgba(34,211,238,0.2)] flex items-center justify-between px-4 py-3"
       >
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
           <div className="hover:rotate-180 transition-transform duration-300">
@@ -51,29 +51,27 @@ const Header = () => {
           <span className="font-space-grotesk text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600 hidden sm:inline-block">
             Capsulr
           </span>
-          <span className="font-space-grotesk text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600 sm:hidden">
-            C
-          </span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Hidden on Mobile */}
         <nav className="hidden lg:flex items-center justify-center gap-4 xl:gap-8 flex-1 px-4">
           <NavLink href="/my-capsule">Explore Capsules</NavLink>
           <NavLink href="/gifted-capsule">Gifted Capsules</NavLink>
           <NavLink href="/feed">Community</NavLink>
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-          {/* Wallet Connection */}
+        {/* Right Side Actions */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {/* Wallet Connection - Visible on Mobile but Compact */}
           {isConnected && address ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
-                  className="border-cyan-500/50 hover:border-cyan-500 text-white flex items-center gap-2 whitespace-nowrap rounded-full px-4"
+                  className="border-cyan-500/50 hover:border-cyan-500 text-white flex items-center gap-2 whitespace-nowrap rounded-full px-3 sm:px-4 h-9 sm:h-10 text-xs sm:text-sm"
                 >
                   <span className="font-mono">{formatAddress(address)}</span>
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-gray-900 border-gray-700">
@@ -95,41 +93,42 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="whitespace-nowrap">
+            <div className="whitespace-nowrap scale-90 sm:scale-100 origin-right">
               <ConnectBtn />
             </div>
           )}
 
+          {/* Create Button - Desktop Only */}
           <Button
-            className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white whitespace-nowrap rounded-full px-6"
+            className="hidden lg:flex bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white whitespace-nowrap rounded-full px-6"
             onClick={() => router.push("/create")}
           >
             Create Capsule
           </Button>
-        </div>
 
-        {/* Mobile menu button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden text-gray-300 hover:text-white"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </Button>
+          {/* Mobile menu button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden text-gray-300 hover:text-white ml-1"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </Button>
+        </div>
       </header>
 
       {/* Mobile menu - Full screen overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-md z-40 flex flex-col pt-24 lg:hidden">
           <div className="container mx-auto px-6 flex flex-col gap-6">
-            <MobileNavLink href="/my-capsule" icon={<Clock className="w-5 h-5 text-cyan-400" />}>Explore Capsules</MobileNavLink>
-            <MobileNavLink href="/gifted-capsule" icon={<Lock className="w-5 h-5 text-cyan-400" />}>Gifted Capsules</MobileNavLink>
-            <MobileNavLink href="/feed" icon={<Users className="w-5 h-5 text-cyan-400" />}>Community</MobileNavLink>
+            <MobileNavLink href="/my-capsule" icon={<Clock className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Explore Capsules</MobileNavLink>
+            <MobileNavLink href="/gifted-capsule" icon={<Lock className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Gifted Capsules</MobileNavLink>
+            <MobileNavLink href="/feed" icon={<Users className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Community</MobileNavLink>
 
             <div className="h-px bg-white/10 my-2" />
 
@@ -156,7 +155,10 @@ const Header = () => {
               )}
               <Button
                 className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white h-12 rounded-xl text-lg font-medium shadow-[0_0_20px_-5px_rgba(34,211,238,0.5)]"
-                onClick={() => router.push("/create")}
+                onClick={() => {
+                  router.push("/create")
+                  setMobileMenuOpen(false)
+                }}
               >
                 Create Capsule
               </Button>
@@ -187,11 +189,13 @@ interface MobileNavLinkProps {
   href: string
   children: React.ReactNode
   icon: React.ReactNode
+  onClick?: () => void
 }
 
-const MobileNavLink = ({ href, children, icon }: MobileNavLinkProps) => (
+const MobileNavLink = ({ href, children, icon, onClick }: MobileNavLinkProps) => (
   <Link
     href={href}
+    onClick={onClick}
     className="flex items-center gap-4 text-xl font-medium text-gray-200 hover:text-white p-4 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/10"
   >
     {icon}

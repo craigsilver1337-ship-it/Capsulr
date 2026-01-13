@@ -169,7 +169,7 @@ const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                             className="w-full h-full md:h-[650px] bg-black/40 backdrop-blur-3xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row ring-1 ring-white/10"
                         >
                             {/* Left Sidebar (Desktop) / Top Bar (Mobile) - 30% */}
-                            <div className="w-full md:w-[35%] bg-black/20 border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-8 flex flex-col relative flex-shrink-0">
+                            <div className="w-full md:w-[35%] bg-black/20 border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-8 flex flex-col relative flex-shrink-0 max-h-[30vh] md:max-h-full">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-transparent" />
 
                                 <div className="mb-6 md:mb-10">
@@ -178,7 +178,7 @@ const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
                                         TERMS OF SERVICE
                                     </h2>
                                     <p className="text-gray-400 text-xs mt-2 font-mono">
-                                        Last Updated: January 5, 2026
+                                        Last Updated: January 13, 2026
                                     </p>
                                 </div>
 
@@ -218,7 +218,7 @@ const TermsModal = ({ isOpen, onClose }: TermsModalProps) => {
 
                             {/* Right Main Area: Content (70%) */}
                             <div className="flex-1 flex flex-col bg-white/[0.02] relative">
-                                <div className="absolute top-4 right-4 z-50">
+                                <div className="absolute top-2 right-2 md:top-4 md:right-4 z-50">
                                     <Button
                                         variant="ghost"
                                         size="icon"

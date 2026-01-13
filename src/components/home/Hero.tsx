@@ -118,7 +118,7 @@ const Hero = () => {
 
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-32 md:pt-40 pb-20 bg-black group">
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24 md:pt-40 pb-20 bg-black group">
       {/* 3D Capsule Scene - Lifted Z-index to occlude text, pointer-events-none to allow clicking buttons underneath */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         <Scene />
@@ -230,14 +230,14 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto"
         >
-          <h1 className="text-4xl md:text-6xl font-bold font-space-grotesk leading-tight mb-6 transition-all duration-700 group-hover:drop-shadow-[0_0_25px_rgba(34,211,238,0.4)]">
-            Your Digital Legacy, <br />
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk leading-tight mb-6 transition-all duration-700 group-hover:drop-shadow-[0_0_25px_rgba(34,211,238,0.4)] px-2">
+            Your Digital Legacy, <br className="hidden sm:block" />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-300 animate-pulse duration-[3000ms]">
               Locked in Time
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto font-normal">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto font-normal px-4">
             The first ultra-fast time-lock protocol on Solana. Secure your messages, art,
             and alpha in immutable capsules.
           </p>
@@ -276,6 +276,7 @@ const Hero = () => {
                 size="lg"
                 variant="outline"
                 className="border-cyan-500/50 hover:border-cyan-500 hover:bg-cyan-500/5 hover:text-white transition-all duration-300"
+                onClick={() => router.push("/my-capsule")}
               >
                 Explore Capsules
               </Button>
@@ -333,7 +334,7 @@ const Hero = () => {
                     <Unlock className="h-10 w-10 mx-auto mb-4 text-cyan-400" />
                     <h3 className="text-xl font-medium mb-2">Message Revealed!</h3>
                     <p className="text-gray-300">
-                      &quot; In 2025, ETH will reach $25,000 and transform global finance. &quot;
+                      &quot; In 2027, SOL will reach $850 and transform global finance. &quot;
                     </p>
                   </motion.div>
                 ) : (
@@ -461,7 +462,7 @@ const Hero = () => {
 
               <div className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
                 <div className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider">
-                  Validator Nodes
+                  Active Guardians
                 </div>
                 <div className="text-4xl md:text-5xl font-bold text-cyan-400 font-mono">
                   {formatNumber(animatedValues.validatorNodes)}
@@ -511,7 +512,7 @@ const Hero = () => {
         </motion.div>
 
         {/* Mobile/Tablet Stats Grid - Visible on screens smaller than XL */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12 w-full max-w-4xl mx-auto xl:hidden relative z-20">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 mt-12 w-full max-w-4xl mx-auto xl:hidden relative z-20 px-2 sm:px-0">
           {/* Card 1: Average Cost */}
           <motion.div
             variants={cardVariants}
@@ -520,14 +521,14 @@ const Hero = () => {
             viewport={{ once: true }}
             className="group"
           >
-            <div className="relative bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-8 h-full group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out overflow-hidden">
+            <div className="relative bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-4 sm:p-6 h-full group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out overflow-hidden">
               {/* Sheen Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-linear pointer-events-none" />
 
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
-                <div className="text-gray-400 text-sm font-medium mb-2 uppercase tracking-wider">Average Cost</div>
-                <div className="text-4xl md:text-5xl font-bold text-cyan-400 font-mono">~${animatedValues.avgCost.toFixed(3)}</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium mb-2 uppercase tracking-wider">Average Cost</div>
+                <div className="text-2xl sm:text-4xl md:text-5xl font-bold text-cyan-400 font-mono">~${animatedValues.avgCost.toFixed(3)}</div>
               </div>
             </div>
           </motion.div>
@@ -541,64 +542,64 @@ const Hero = () => {
             transition={{ delay: 0.1 }}
             className="group"
           >
-            <div className="relative bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-8 h-full group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out overflow-hidden">
+            <div className="relative bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-4 sm:p-6 h-full group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out overflow-hidden">
               {/* Sheen Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-linear pointer-events-none" />
 
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
-                <div className="text-gray-400 text-sm font-medium mb-2 uppercase tracking-wider">Total Capsules</div>
-                <div className="text-gray-500 text-sm mb-4">On our Chain</div>
-                <div className="text-4xl md:text-5xl font-bold text-cyan-400 font-mono leading-tight">{formatNumber(animatedValues.totalTransactions)}</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium mb-2 uppercase tracking-wider">Total Capsules</div>
+                <div className="text-gray-500 text-xs sm:text-sm mb-2 sm:mb-4">On our Chain</div>
+                <div className="text-2xl sm:text-4xl md:text-5xl font-bold text-cyan-400 font-mono leading-tight">{formatNumber(animatedValues.totalTransactions)}</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Card 3: Validator Nodes */}
+          {/* Card 3: Validator Nodes - Spans full width on very small screens if needed, otherwise matches grid */}
           <motion.div
             variants={cardVariants}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="group"
+            className="group col-span-2 sm:col-span-1"
           >
-            <div className="relative bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-8 h-full group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out overflow-hidden">
+            <div className="relative bg-black/40 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-4 sm:p-6 h-full group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 ease-out overflow-hidden">
               {/* Sheen Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-linear pointer-events-none" />
 
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
-                <div className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider">Validator Nodes</div>
-                <div className="text-4xl md:text-5xl font-bold text-cyan-400 font-mono">{formatNumber(animatedValues.validatorNodes)}</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium mb-3 sm:mb-6 uppercase tracking-wider">Active Guardians</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-400 font-mono">{formatNumber(animatedValues.validatorNodes)}</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Card 4: Carbon Neutral */}
+          {/* Card 4: Carbon Neutral - Always span 2 columns on mobile for text breadth */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="group"
+            className="group col-span-2 sm:col-span-1"
           >
-            <div className="relative bg-black/40 backdrop-blur-md border border-green-500/30 rounded-2xl px-6 py-4 h-full flex flex-col justify-center group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 ease-out overflow-hidden">
+            <div className="relative bg-black/40 backdrop-blur-md border border-green-500/30 rounded-2xl px-4 py-4 sm:px-6 sm:py-4 h-full flex flex-col justify-center group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 ease-out overflow-hidden">
               {/* Sheen Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-400/10 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-linear pointer-events-none" />
 
               <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-cyan-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10 flex flex-col gap-2 transition-transform duration-500 group-hover:translate-x-1">
-                <div className="text-gray-400 text-xs font-medium uppercase tracking-wider">
+                <div className="text-gray-400 text-[10px] sm:text-xs font-medium uppercase tracking-wider">
                   Efficient. Scalable. Global.
                 </div>
-                <div className="flex items-center justify-between gap-4">
-                  <div className="text-2xl font-bold text-green-400 whitespace-nowrap">
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
+                  <div className="text-xl sm:text-2xl font-bold text-green-400 whitespace-nowrap">
                     Carbon Neutral
                   </div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-medium border border-green-500/30 cursor-pointer hover:bg-green-500/30 transition-colors whitespace-nowrap"
+                    className="bg-green-500/20 text-green-400 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium border border-green-500/30 cursor-pointer hover:bg-green-500/30 transition-colors whitespace-nowrap"
                   >
                     Sustainability
                   </motion.div>
@@ -611,23 +612,23 @@ const Hero = () => {
 
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center z-30">
         <motion.span
-          className="text-gray-400 mb-2"
+          className="text-gray-500 text-xs mb-2 tracking-widest uppercase opacity-80"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.8 }}
         >
           Scroll to explore
         </motion.span>
-        <div className="w-6 h-9 border-2 border-cyan-500/30 rounded-full flex justify-center pt-1">
+        <div className="w-5 h-8 border-2 border-cyan-500/20 rounded-full flex justify-center pt-1">
           <motion.div
             animate={{
-              y: [0, 12, 0],
+              y: [0, 8, 0],
             }}
             transition={{
               repeat: Infinity,
               duration: 1.5
             }}
-            className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
+            className="w-1 h-1 bg-cyan-400 rounded-full"
           />
         </div>
       </div>

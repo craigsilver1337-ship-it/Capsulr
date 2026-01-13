@@ -15,6 +15,8 @@ import {
 } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import GlobeComponent from "../Globe"
+import { cn } from "@/lib/utils"
+import { useState } from "react"
 
 const Features = () => {
   const features = [
@@ -78,6 +80,13 @@ const Features = () => {
       backDesc: "Store decryption keys for private Discords, early access links, or content that only reveals in the future."
     },
   ]
+  const [flippedIndex, setFlippedIndex] = useState<number | null>(null)
+
+  const handleCardInteraction = (index: number) => {
+    // Desktop hover will still work via CSS group-hover
+    // This state handles mobile tap toggling
+    setFlippedIndex(flippedIndex === index ? null : index)
+  }
 
   // Ultra-smooth premium easing
   // Ultra-smooth premium easing
@@ -225,9 +234,14 @@ const Features = () => {
                   variants={gridItemVariants}
                   // Flip Card Container
                   className="group h-[280px] w-full [perspective:1000px] cursor-default"
+                  onClick={() => handleCardInteraction(index)}
                 >
                   {/* Flipper Wrapper */}
-                  <div className="relative w-full h-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                  <div className={cn(
+                    "relative w-full h-full transition-all duration-700 [transform-style:preserve-3d]",
+                    "group-hover:[transform:rotateY(180deg)]",
+                    flippedIndex === index && "[transform:rotateY(180deg)]"
+                  )}>
 
                     {/* Front Face */}
                     <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] bg-gradient-to-br from-white/5 via-black/40 to-cyan-950/20 border border-cyan-500/10 rounded-xl p-8 flex flex-col items-center justify-center text-center backdrop-blur-xl shadow-[0_0_15px_-5px_rgba(34,211,238,0.1)]">

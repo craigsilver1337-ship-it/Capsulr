@@ -25,12 +25,12 @@ interface CapsuleDisplayProps {
   isUnlocking?: boolean;
 }
 
-const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({ 
-  capsule, 
-  onUnlock, 
-  onGift, 
+const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({
+  capsule,
+  onUnlock,
+  onGift,
   onViewContent,
-  isUnlocking = false 
+  isUnlocking = false
 }) => {
   const [giftRecipient, setGiftRecipient] = useState('');
   const [showGiftInput, setShowGiftInput] = useState(false);
@@ -57,11 +57,11 @@ const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({
 
   const formatTimeRemaining = (seconds: number) => {
     if (seconds <= 0) return 'Ready to unlock!';
-    
+
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    
+
     if (days > 0) return `${days}d ${hours}h ${minutes}m`;
     if (hours > 0) return `${hours}h ${minutes}m`;
     return `${minutes}m`;
@@ -88,9 +88,8 @@ const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <div className={`p-2 rounded-lg ${
-            capsule.isOpened ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-          }`}>
+          <div className={`p-2 rounded-lg ${capsule.isOpened ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+            }`}>
             <TypeIcon className="w-5 h-5" />
           </div>
           <div>
@@ -100,9 +99,8 @@ const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({
             <p className="text-gray-400 text-sm">{getTypeLabel(capsule.lockType)}</p>
           </div>
         </div>
-        <div className={`p-2 rounded-lg ${
-          capsule.isOpened ? 'bg-green-500/20' : 'bg-red-500/20'
-        }`}>
+        <div className={`p-2 rounded-lg ${capsule.isOpened ? 'bg-green-500/20' : 'bg-red-500/20'
+          }`}>
           {capsule.isOpened ? (
             <Unlock className="w-5 h-5 text-green-400" />
           ) : (
@@ -123,9 +121,8 @@ const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({
         </div>
         <div>
           <p className="text-sm text-gray-400">Status</p>
-          <p className={`text-sm font-medium ${
-            capsule.isOpened ? 'text-green-400' : 'text-red-400'
-          }`}>
+          <p className={`text-sm font-medium ${capsule.isOpened ? 'text-green-400' : 'text-red-400'
+            }`}>
             {capsule.isOpened ? 'Unlocked' : 'Locked'}
           </p>
         </div>
@@ -156,7 +153,7 @@ const CapsuleDisplay: React.FC<CapsuleDisplayProps> = ({
             {isUnlocking ? 'Unlocking...' : 'Unlock Capsule'}
           </button>
         )}
-        
+
         {capsule.isOpened && (
           <button
             onClick={() => onViewContent(capsule)}
@@ -237,7 +234,7 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({ mediaUri }) => {
           // Try to fetch and determine from content-type
           const response = await fetch(mediaUri, { method: 'HEAD' });
           const contentType = response.headers.get('content-type');
-          
+
           if (contentType?.startsWith('image/')) {
             setMediaType('image');
           } else if (contentType?.startsWith('video/')) {
@@ -251,7 +248,7 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({ mediaUri }) => {
         if (mediaType === 'image' || isImage) {
           const response = await fetch(mediaUri);
           if (!response.ok) throw new Error('Failed to fetch media');
-          
+
           const blob = await response.blob();
           const objectUrl = URL.createObjectURL(blob);
           setMediaData(objectUrl);
@@ -297,9 +294,9 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({ mediaUri }) => {
         <h4 className="text-lg font-semibold text-white mb-2">Media</h4>
         <div className="bg-gray-800/50 rounded-lg p-4">
           <div className="text-red-400 text-sm mb-2">Failed to load media: {error}</div>
-          <a 
-            href={mediaUri} 
-            target="_blank" 
+          <a
+            href={mediaUri}
+            target="_blank"
             rel="noopener noreferrer"
             className="text-cyan-400 hover:text-cyan-300 underline break-all"
           >
@@ -315,23 +312,23 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({ mediaUri }) => {
       <h4 className="text-lg font-semibold text-white mb-2">Media</h4>
       <div className="bg-gray-800/50 rounded-lg p-4">
         {mediaType === 'image' && mediaData ? (
-          <img 
-            src={mediaData} 
+          <img
+            src={mediaData}
             alt="Capsule media"
             className="max-w-full h-auto rounded-lg"
             onError={() => setError('Failed to display image')}
           />
         ) : mediaType === 'video' && mediaData ? (
-          <video 
-            src={mediaData} 
+          <video
+            src={mediaData}
             controls
             className="max-w-full h-auto rounded-lg"
             onError={() => setError('Failed to display video')}
           />
         ) : (
-          <a 
-            href={mediaUri} 
-            target="_blank" 
+          <a
+            href={mediaUri}
+            target="_blank"
             rel="noopener noreferrer"
             className="text-cyan-400 hover:text-cyan-300 underline break-all"
           >
@@ -355,14 +352,14 @@ const CapsuleManager: React.FC = () => {
   const { data: ownedCapsuleIds, isLoading: isLoadingCapsules } = useGetOwnedCapsules(address || '');
   const { unlockCapsule, hash: unlockHash, isPending: isUnlocking } = useUnlockCapsule();
   const { giftCapsule, hash: giftHash, isPending: isGifting } = useGiftCapsule();
-  
+
   // Transaction receipts
   const { isLoading: isUnlockLoading, isSuccess: isUnlockSuccess } = useTransactionReceipt(unlockHash);
   const { isLoading: isGiftLoading, isSuccess: isGiftSuccess } = useTransactionReceipt(giftHash);
 
   // Get capsule data for up to 20 capsules
   const capsuleIds = Array.isArray(ownedCapsuleIds) ? ownedCapsuleIds.slice(0, 20) : [];
-  
+
   // Call hooks for each capsule at the top level (fixed number of hooks)
   const capsule0 = useGetCapsule(capsuleIds[0] || BigInt(0));
   const capsule1 = useGetCapsule(capsuleIds[1] || BigInt(0));
@@ -489,8 +486,62 @@ const CapsuleManager: React.FC = () => {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-black pt-12 text-white flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-black to-cyan-900/20" />
+
+          <motion.div
+            className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[100px]"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px]"
+            animate={{
+              x: [0, -80, 0],
+              y: [0, 30, 0],
+              scale: [1, 0.8, 1]
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          <div className="absolute inset-0">
+            {[...Array(120)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute bg-white rounded-full"
+                initial={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random(),
+                  scale: Math.random() * 0.5 + 0.5,
+                }}
+                animate={{
+                  opacity: [0.1, 1, 0.1],
+                  scale: [0.5, 1.2, 0.5],
+                }}
+                transition={{
+                  duration: Math.random() * 3 + 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: Math.random() * 5,
+                }}
+                style={{
+                  width: Math.random() < 0.3 ? '3px' : '1px',
+                  height: Math.random() < 0.3 ? '3px' : '1px',
+                  boxShadow: Math.random() < 0.3 ? '0 0 6px rgba(255,255,255,0.9)' : 'none'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="relative z-10 text-center">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-500 bg-clip-text text-transparent mb-8">
             Connect Your Wallet
           </h1>
@@ -502,37 +553,154 @@ const CapsuleManager: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-12 text-white">
-      <div className="container mx-auto px-6 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-500 bg-clip-text text-transparent mb-4">
+    <div className="min-h-screen bg-black pt-32 text-white relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-black to-cyan-900/20" />
+
+        <motion.div
+          className="absolute top-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[100px]"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px]"
+          animate={{
+            x: [0, -80, 0],
+            y: [0, 30, 0],
+            scale: [1, 0.8, 1]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        <div className="absolute inset-0">
+          {[...Array(120)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute bg-white rounded-full"
+              initial={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random(),
+                scale: Math.random() * 0.5 + 0.5,
+              }}
+              animate={{
+                opacity: [0.1, 1, 0.1],
+                scale: [0.5, 1.2, 0.5],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: Math.random() * 5,
+              }}
+              style={{
+                width: Math.random() < 0.3 ? '3px' : '1px',
+                height: Math.random() < 0.3 ? '3px' : '1px',
+                boxShadow: Math.random() < 0.3 ? '0 0 6px rgba(255,255,255,0.9)' : 'none'
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-cyan-400 via-cyan-200 to-cyan-500 bg-clip-text text-transparent mb-6 tracking-tight">
             My Time Capsules
           </h1>
-          <p className="text-gray-400 text-lg">
-            Manage your on-chain time capsules
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Manage your digital legacy. View, unlock, and share your on-chain time capsules from a single dashboard.
           </p>
-        </div>
+        </motion.div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-2">Total Capsules</h3>
-            <p className="text-3xl font-bold text-white">
-              {Array.isArray(ownedCapsuleIds) ? ownedCapsuleIds.length : 0}
-            </p>
-          </div>
-          <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-green-400 mb-2">Unlocked</h3>
-            <p className="text-3xl font-bold text-white">
-              {capsules.filter(c => c.isOpened).length}
-            </p>
-          </div>
-          <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-red-400 mb-2">Locked</h3>
-            <p className="text-3xl font-bold text-white">
-              {capsules.filter(c => !c.isOpened).length}
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 max-w-5xl mx-auto">
+          {/* Total Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            whileHover={{ y: -5 }}
+            className="bg-black/40 border border-white/5 rounded-3xl p-8 backdrop-blur-xl relative overflow-hidden group hover:border-cyan-500/20 hover:shadow-[0_0_30px_-10px_rgba(6,182,212,0.15)] transition-all duration-500"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Background Icon */}
+            <Target strokeWidth={1} className="absolute -right-4 -bottom-4 w-32 h-32 text-cyan-500/10 rotate-[-10deg] transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110 opacity-20" />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-cyan-400/80 transition-colors">Total Capsules</h3>
+                <div className="p-2.5 bg-cyan-500/10 rounded-xl border border-cyan-500/20 group-hover:border-cyan-500/50 transition-colors">
+                  <Target className="w-5 h-5 text-cyan-400" />
+                </div>
+              </div>
+              <p className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-cyan-200 tracking-tight">
+                {Array.isArray(ownedCapsuleIds) ? ownedCapsuleIds.length : 0}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Unlocked Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            whileHover={{ y: -5 }}
+            className="bg-black/40 border border-white/5 rounded-3xl p-8 backdrop-blur-xl relative overflow-hidden group hover:border-emerald-500/20 hover:shadow-[0_0_30px_-10px_rgba(16,185,129,0.15)] transition-all duration-500"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Background Icon */}
+            <Unlock strokeWidth={1} className="absolute -right-4 -bottom-4 w-32 h-32 text-emerald-500/10 rotate-[-10deg] transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110 opacity-20" />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-emerald-400/80 transition-colors">Unlocked</h3>
+                <div className="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-500/20 group-hover:border-emerald-500/50 transition-colors">
+                  <Unlock className="w-5 h-5 text-emerald-400" />
+                </div>
+              </div>
+              <p className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-emerald-200 tracking-tight">
+                {capsules.filter(c => c.isOpened).length}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Locked Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            whileHover={{ y: -5 }}
+            className="bg-black/40 border border-white/5 rounded-3xl p-8 backdrop-blur-xl relative overflow-hidden group hover:border-red-500/20 hover:shadow-[0_0_30px_-10px_rgba(239,68,68,0.15)] transition-all duration-500"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Background Icon */}
+            <Lock strokeWidth={1} className="absolute -right-4 -bottom-4 w-32 h-32 text-red-500/10 rotate-[-10deg] transition-transform duration-500 group-hover:rotate-0 group-hover:scale-110 opacity-20" />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-red-400/80 transition-colors">Locked</h3>
+                <div className="p-2.5 bg-red-500/10 rounded-xl border border-red-500/20 group-hover:border-red-500/50 transition-colors">
+                  <Lock className="w-5 h-5 text-red-400" />
+                </div>
+              </div>
+              <p className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-red-200 tracking-tight">
+                {capsules.filter(c => !c.isOpened).length}
+              </p>
+            </div>
+          </motion.div>
         </div>
 
         {/* Transaction Status */}
@@ -542,7 +710,7 @@ const CapsuleManager: React.FC = () => {
               <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-4">
                 <p className="text-green-400">✅ Capsule unlocked successfully!</p>
                 {unlockHash && (
-                  <a 
+                  <a
                     href={`https://testnet.monadexplorer.com/tx/${unlockHash}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -553,21 +721,21 @@ const CapsuleManager: React.FC = () => {
                 )}
               </div>
             )}
-                         {isGiftSuccess && (
-               <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4 mb-4">
-                 <p className="text-purple-400">✅ Capsule gifted successfully!</p>
-                 {giftHash && (
-                   <a 
-                     href={`https://testnet.monadexplorer.com/tx/${giftHash}`}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="text-purple-300 hover:text-purple-200 text-sm"
-                   >
-                     View transaction →
-                   </a>
-                 )}
-               </div>
-             )}
+            {isGiftSuccess && (
+              <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4 mb-4">
+                <p className="text-purple-400">✅ Capsule gifted successfully!</p>
+                {giftHash && (
+                  <a
+                    href={`https://testnet.monadexplorer.com/tx/${giftHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-purple-300 hover:text-purple-200 text-sm"
+                  >
+                    View transaction →
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         )}
 
@@ -603,7 +771,7 @@ const CapsuleManager: React.FC = () => {
                   <ChevronLeft className="w-4 h-4" />
                   Previous
                 </button>
-                
+
                 <div className="flex items-center gap-2">
                   <span className="text-gray-400 text-sm">
                     Page {currentPage + 1} of {totalPages}
@@ -613,14 +781,13 @@ const CapsuleManager: React.FC = () => {
                       <button
                         key={i}
                         onClick={() => setCurrentPage(i)}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          i === currentPage ? 'bg-cyan-400' : 'bg-gray-600'
-                        }`}
+                        className={`w-2 h-2 rounded-full transition-colors ${i === currentPage ? 'bg-cyan-400' : 'bg-gray-600'
+                          }`}
                       />
                     ))}
                   </div>
                 </div>
-                
+
                 <button
                   onClick={nextPage}
                   disabled={currentPage === totalPages - 1}
@@ -632,7 +799,7 @@ const CapsuleManager: React.FC = () => {
               </div>
             )}
 
-            <motion.div 
+            <motion.div
               key={currentPage}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -653,19 +820,41 @@ const CapsuleManager: React.FC = () => {
             </motion.div>
           </div>
         ) : !isLoadingCapsules ? (
-          <div className="text-center py-12">
-            <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Clock className="w-12 h-12 text-gray-600" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-20 relative z-10"
+          >
+            <div className="relative w-32 h-32 mx-auto mb-8">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border-2 border-dashed border-gray-700 rounded-full"
+              />
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-4 border border-gray-800 rounded-full"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm rounded-full shadow-[0_0_30px_-10px_rgba(6,182,212,0.3)]">
+                <Clock className="w-12 h-12 text-cyan-500/70" />
+              </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-400 mb-4">No Capsules Found</h3>
-            <p className="text-gray-500 mb-8">You haven't created any time capsules yet.</p>
-            <button
+
+            <h3 className="text-2xl font-bold text-white mb-3 tracking-wide">Your Journey Begins Now</h3>
+            <p className="text-gray-400 mb-8 max-w-sm mx-auto leading-relaxed">
+              You haven't preserved any memories on the blockchain yet. Create your first time capsule today.
+            </p>
+
+            <motion.button
               onClick={() => window.location.href = '/create'}
-              className="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-3 rounded-lg transition-colors"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(6,182,212,0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-10 py-4 rounded-xl font-semibold text-lg hover:from-cyan-400 hover:to-cyan-500 transition-all shadow-[0_0_15px_rgba(6,182,212,0.2)]"
             >
               Create Your First Capsule
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         ) : null}
 
         {/* Content Viewing Modal */}
@@ -707,7 +896,7 @@ const CapsuleManager: React.FC = () => {
                           <p className="text-gray-300">{content.title}</p>
                         </div>
                       )}
-                      
+
                       {content.message && (
                         <div>
                           <h4 className="text-lg font-semibold text-white mb-2">Message</h4>

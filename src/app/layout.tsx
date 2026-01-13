@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 // import Providers from "@/app/providers";
 import Providers from "@/app/providers";
 import Header from "@/components/layout/Header";
+import { Toaster } from "@/components/ui/sonner";
 
 import { Dancing_Script } from "next/font/google";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
             {children}
             <CyanCursor />
             <Footer />
+            <Toaster />
           </ThemeProvider>
         </Providers>
 
