@@ -79,7 +79,7 @@ export default function Scene() {
         {/* @ts-ignore */}
         <pointLight position={[-10, -10, 10]} intensity={0.8} />
         <FloatingCapsule />
-        <Environment preset="night" />
+        <Environment files="/dikhololo_night_1k.hdr" />
       </Canvas>
     </div>
   )

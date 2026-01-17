@@ -78,7 +78,7 @@ const Footer = () => {
               Resources
             </motion.h4>
             <ul className="space-y-2">
-              <FooterLink href="/documentation">Documentation</FooterLink>
+              <FooterLink href="/docs">Documentation</FooterLink>
               <li>
                 <button
                   onClick={() => setIsGuidesOpen(true)}

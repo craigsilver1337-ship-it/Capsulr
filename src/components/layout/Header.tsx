@@ -12,7 +12,8 @@ import {
   Lock,
   ChevronDown,
   LogOut,
-  Copy
+  Copy,
+  FileText
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useAccount, useDisconnect } from "wagmi"
@@ -58,6 +59,7 @@ const Header = () => {
           <NavLink href="/my-capsule">Explore Capsules</NavLink>
           <NavLink href="/gifted-capsule">Gifted Capsules</NavLink>
           <NavLink href="/feed">Community</NavLink>
+          <NavLink href="/docs">Docs</NavLink>
         </nav>
 
         {/* Right Side Actions */}
@@ -129,6 +131,7 @@ const Header = () => {
             <MobileNavLink href="/my-capsule" icon={<Clock className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Explore Capsules</MobileNavLink>
             <MobileNavLink href="/gifted-capsule" icon={<Lock className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Gifted Capsules</MobileNavLink>
             <MobileNavLink href="/feed" icon={<Users className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Community</MobileNavLink>
+            <MobileNavLink href="/docs" icon={<FileText className="w-5 h-5 text-cyan-400" />} onClick={() => setMobileMenuOpen(false)}>Docs</MobileNavLink>
 
             <div className="h-px bg-white/10 my-2" />
 
